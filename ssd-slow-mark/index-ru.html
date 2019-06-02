@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="cache-control" content="no-store" />
+    <title>SSD SlowMark (ru)</title>
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.0.min.js"
+            integrity="sha256-RTQy8VOmNlT6b2PIRur37p6JEBZUE7o8wPgMvu18MC4=" crossorigin="anonymous"></script>
+    <script src="../assets/js/main.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"
+            integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+</head>
+<body>
+
+<header>
+    <div class="wrapper">
+        <span class="lang-selector">
+            <a href="index.html"><img src="../assets/icons/lang-en.png"></a>
+            <a href="index-ru.html"><img src="../assets/icons/lang-ru.png"></a>
+        </span>
+
+        <table class="collapsed">
+            <tr>
+                <td><img src="images/slow.png" width="80px" height="80px"/></td>
+                <td>
+                    <h1>SSD Slow Mark</h1>
+                    <p style="font-size: 100%">Проверь на сколько медленный твой SSD диск</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+<div id="banner">
+    <span id="logo"></span>
+
+    <a href="https://github.com/tools4free/SsdSlowMark" class="button fork"><strong>Посмотреть на GitHub</strong></a>
+
+    <div class="downloads">
+        <span>Скачать:</span>
+        <ul>
+            <li><a href="https://github.com/tools4free/SsdSlowMark/releases" class="button">ZIP</a></li>
+        </ul>
+    </div>
+
+</div><!-- end banner -->
+
+<div class="wrapper">
+    <nav>
+        <ul></ul>
+    </nav>
+    <section>
+
+        <h1 id="hdr-why">Зачем SSD SlowMark?</h1>
+
+        <p>Недавно я был очень озадачен тем фактом что копирование 400 GB с одного диска NVMe SSD на другой
+           диск NVMe SSD заняло почти 2 часа вместо ожидаемых 10-20 минут, а то и быстрее. Вместо этого
+           я получил скорость как на HDD 10 лет назад.</p>
+
+        <p>Похоже что заоблачные скорости получаемые от бенчмарков типа <a href="https://crystalmark.info">CrystalDiskMark</a>
+            и <a href="https://www.alex-is.de/PHP/fusion/downloads.php?cat_id=4&download_id=9">AS SSD</a>
+            измеряют скорость так называемого <a href="https://zen.yandex.ru/media/id/5b24f1e5b5b89100a8bada3a/slckesh-razmer-imeet-znachenie-5bd42b6b580af300ac3477fb/">SLC кэша</a>
+            на вашем диске - размер памяти, который 'обычно' не больше 10GB.</p>
+
+        <p>Копаясь в интернете мне не удалось найти сравнительную статистику реальных скоростей SSD дисков
+            а так же не попалось программ, которыми можно адекватно измерить скорость SSD дисков которые есть под рукой.
+            Поэтому я решил написать свою.</p>
+
+        <p>Пожалуйста, встречайте ещё одно средство для измерения скорости SSD - <b>SSD SlowMark</b>.</p>
+
+        <p>Он умеет измерять только две вещи - <b>Скорость Последовательного Чтения</b> и <b>Скорость Последовательной записи</b>.
+            Но в отличите от других программ ...
+        </p>
+
+            <ul>
+                <li>Он безвреден для ваших данных - во время теста идёт создание-запись обычных файлов на диске <br/>
+                    (некоторые низко-уровневые программы затирают всё что есть на диске)</li>
+                <li>Он измеряет скорость на больших объёмах данных</li>
+                <li>Он строит более информатиные графики</li>
+                <li>Его можно запутисть всюду где работает Java - Windows, Linux, Mac, ...</li>
+            </ul>
+
+        <p>Ещё один тест возможно будет добавлен в будущем - время на которое замирает диск при удалении большого объёма данных (N*10GB).
+            В это время диск обрабатывает команду <a target="_blank" href="https://ru.wikipedia.org/wiki/TRIM">TRIM</a>.
+            Некоторые диски при этом полностью замирают на насколько секунд, некоторые временно начинают значительно медленнее работать.
+        </p>
+
+
+        <p>Типичный график <b>Записи</b> на современных NVMe SSD дисках выглядит как на картинке ниже
+            (конечно сделанной в SSD SlowMark):</p>
+
+            <ul>
+                <li>Сравнительно небольшая часть данных записывается на большой скорости - это как раз скорость
+                    <a href="http://industrial.adata.com/us/technology/74/">SLC кэша</a>.</li>
+                <li>Когда SLC кэш заканчивается, SSD достигает своей долговременной скорости записи.</li>
+                <li>Замечание: для этого же диска, скорости последовательной записи измеренные в AS SSD = <b>850 MB/s</b>,
+                    в CrystalDiskMark = <b>1174 MB/s</b>. <br/>
+                    Это в 4-6 раз больше чем есть на самом деле.</li>
+            </ul>
+
+        <p>С помощью SSD SlowMark вы сможете лучше понять на что способен ваш SSD и в будущем
+            не разочароваться слишком маленькой скоростью когда ожидаете значительно большего.</p>
+
+        <p>
+            <img src="images/sample-write-chart.png" /> <br/>
+            <img src="images/same-from-other-tools.png" /> <br/>
+        </p>
+
+
+        <p><br/></p>
+
+        <h2 id="hdr-how-to-test">Как тестировать?</h2>
+
+        <p>Типичные результаты тестов приводимые в интернете были получены на совершенно новом и пустом SSD.
+            Это неправильно. Почему? - потому что скорость SSD зачастую падает по мере заполнение, а мы же
+            не покупаем SSD чтобы он оставался пустым.
+        </p>
+
+        <p>Поэтому давайте тестировать диски в состоянии близком к обычным условиям, т.е. изначально диск заполнен
+            на 50% (и более) и после записи полного набора данных на диске остаётся ещё 10-30% свободного места.
+        </p>
+
+        <p>По моим наблюдениям, в таких услових, размер данных и достаточный для измерения эффективного размера
+            <a href="http://industrial.adata.com/us/technology/74/">SLC кэша</a> и для быстрого исполнения теста -
+            <b>50GB</b>. Поэтому давайте использовать это размер для сравнения разных дисков.
+        </p>
+
+        <p>На пример:</p>
+
+            <ul>
+                <li>Есть диск на <b>512 GB</b>.</li>
+                <li>Давайте начинать тест на <b>50 GB</b> когда диск изначально заполнен <b>300 .. 400 GB</b>.</li>
+            </ul>
+
+
+        <p>А теперь ...</p>
+
+            <ul>
+                <li>Скачайте последнюю версию <a target="_blank" href="https://github.com/tools4free/SsdSlowMark/releases">SSD Slow Mark</a>.<br/>
+                    Для исполнения ему нужен <b>Java Runtime Environment</b>. Если у вас уже инсталлирован JRE версии 8 или выше,
+                    забирайте маленький файл "<b>*_no_jre.zip</b>". Иначе - скачивайте архив с включённым JRE: "<b>*_with_jre.zip</b>"</li>
+                <li>Распакуйте архив куда-то на SSD диск подлежащий тестированию (как упомянуто выше, с более чем 50GB свободного места).</li>
+                <li>Запустите <b>test-write+read-050gb</b> ...</li>
+                <li>... ожидайте завершения теста. HTML отчёт откроется в броузере автоматически.</li>
+            </ul>
+
+        <p>Для экспериментаторов ...</p>
+
+            <ul>
+                <li>Запустить "тест на запись под завязку" можно через <b>test-write-all</b>,
+                    после этого много файликов можно будет найти в папке <b>_data</b></li>
+                <li>Потом можно запустить <b>test-read-all</b> чтобы проивести тест на
+                    чтение по сгенерённым данным.</li>
+                <li>Подробнее о поддерживаемых опциях запуска можно узнать из исходников
+                    <a target="_blank" href="https://github.com/tools4free/SsdSlowMark/blob/master/src/main/java/tools4free/ssm/Config.java">sources</a>.</li>
+            </ul>
+
+        <p><br/></p>
+
+        <h2 id="hdr-what-in-report">Что в отчёте?</h2>
+
+        <p>В отчёте вы найдёте:</p>
+
+            <ul>
+                <li><b>Усредённую информацию</b>, наиболее важной является:
+
+                    <br/><br/>
+                    - <b>порция данных записанная на максимальной скорости</b> - это обычно соответствует размеру SLC кэша, который доступен в данный момент. <br/>
+                    (Замечание: некоторые диски могут иметь постоянно плохую скорость - значит они не имеют SLC кэша,
+                     а некоторые могут иметь постоянно высокую скорость - это значит что либо на диске стоит быстрая память типа
+                    <a href="https://en.wikipedia.org/wiki/3D_XPoint">3D XPoint</a> или
+                    размер SLC кэша ещё не закончился, в некоторых случаях он может занимать 20-30% от диска.
+
+                    <br/><br/>
+                    - <b>максимальная скорость чтения</b> - от этого зависит на сколько быстро запускаются программы
+
+                    <br/><br/>
+                    - <b>наиболее типичная скорость записи</b> - от этого зависит как быстро можно записать большой объём данных
+
+                    <br/><br/>
+                    <img src="images/report-averages.png" />
+
+                    <br/><br/>
+
+                </li>
+
+
+                <li><b>Детальный график теста скорости чтения и записи</b>:
+                    <img src="images/report-chart-ru.png" />
+                    <br/><br/>
+                </li>
+
+
+                <li><b>Сырые цифры с собранными данными записываются в CSV файл</b> -
+                    их можно использовать для построения сравнительных графиков по нескольким дискам,
+                    к примеру в Excel.
+            </ul>
+
+        <p><br/></p>
+
+        <h2 id="hdr-my-results">Мои результаты</h2>
+
+        <p>
+            И ниже можно найти собственно-ручно собранные результаты по некоторым SSD дискам
+        </p>
+
+        <table class="metrics">
+            <tr>
+                <th>Drive Model</th>
+                <th>Type</th>
+                <th>Size, GB</th>
+                <th>Year</th>
+                <th>Price, $$$</th>
+                <th>Read MB/s</th>
+                <th>Write MB/s</th>
+                <th>Cache Write MB/s</th>
+                <th>Cache Size GB</th>
+            </tr>
+
+            <tr>
+                <td><a target="_blank" href="results/WDS500G2X0C/WDS500G2X0C-00L350_Summary.html">WD Black 2018</a></td>
+                <td>M.2: NVMe</td>
+                <td>500</td>
+                <td>2018</td>
+                <td>$120</td>
+                <td>1975</td>
+                <td>450</td>
+                <td>840</td>
+                <td>5.5</td>
+            </tr>
+
+            <tr>
+                <td><a target="_blank" href="results/INTEL_SSDPEKNW010T8/INTEL_SSDPEKNW010T8_Summary.html">Intel 660p</a></td>
+                <td>M.2: NVMe</td>
+                <td>1000</td>
+                <td>2018</td>
+                <td>$130</td>
+                <td>1350</td>
+                <td>70</td>
+                <td>700</td>
+                <td>(?) 20</td>
+            </tr>
+
+            <tr>
+                <td><a target="_blank" href="results/ADATA_SP550NS38/ADATA_SP550NS38_Summary.html">AData SP550NS38</a></td>
+                <td>2.5: SATA</td>
+                <td>240</td>
+                <td>???</td>
+                <td>???</td>
+                <td>450</td>
+                <td>125</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td><a target="_blank" href="results/GOODRAM_CX200/GOODRAM_Summary.html">Goodram CX200</a></td>
+                <td>2.5: SATA</td>
+                <td>480</td>
+                <td>2016</td>
+                <td>???</td>
+                <td>440</td>
+                <td>220</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td><a target="_blank" href="results/SAMSUNG_MZVLW256HEHP-000H1/SAMSUNG_MZVLW256HEHP-000H1_Summary.html">Samsung MZVLW256HEHP</a></td>
+                <td>2.5: SATA</td>
+                <td>256</td>
+                <td>2016</td>
+                <td>???</td>
+                <td>1850</td>
+                <td>203</td>
+                <td>445</td>
+                <td>2.5</td>
+            </tr>
+
+            <tr>
+                <td><a target="_blank" href="results/Samsung_SSD_850_EVO_500GB/Samsung_SSD_850_EVO_500GB_Summary.html">Samsung 850 EVO</a></td>
+                <td>2.5: SATA</td>
+                <td>500</td>
+                <td>???</td>
+                <td>???</td>
+                <td>460</td>
+                <td>150</td>
+                <td>295</td>
+                <td>5.5</td>
+            </tr>
+
+            <tr>
+                <td><a target="_blank" href="results/SanDisk_SDSSDHII480G/SanDisk_SDSSDHII480G_Summary.html">SanDisk SDSSDHII</a></td>
+                <td>2.5: SATA</td>
+                <td>480</td>
+                <td>2014</td>
+                <td>???</td>
+                <td>470</td>
+                <td>130</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+
+        <!--
+            <tr>
+                <td><a target="_blank" href="results/XXXXXXX/XXXXXXXXX _Summary.html">XXXXXXXXX</a></td>
+                <td>TYPE</td>
+                <td>SIZE</td>
+                <td>YEAR</td>
+                <td>PRICE</td>
+                <td>READ</td>
+                <td>WRITE</td>
+                <td>CACHE_WRITE</td>
+                <td>CACHE_SIZE</td>
+            </tr>
+        -->
+        </table>
+
+        <br/>
+
+        <p>
+            Замечение - график чтения и записи для <a target="_blank" href="results/INTEL_SSDPEKNW010T8/INTEL_SSDPEKNW010T8_Summary.html">Intel 660p</a> выглядит очень странным ...
+        </p>
+
+
+        <p><br/></p>
+
+        <h2 id="hdr-your-results">Ваши результаты</h2>
+
+
+        <p>
+            Если у вас есть полезные результаты тестов ... <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- свежие модели SSD дисков <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- старые модели, но всё ещё рекомендуемые к покупке <br/>
+            ... и вы желаете опубликовать их тут, отправьте архив с содержимым папки отчёта на
+            <a href="mailto:software.tools4free@gmail.com?subject=SSD SlowMark Results">software.tools4free@gmail.com</a>.
+            Дополнительно укажите тип подключения, он может быть разным у одной модели.
+        </p>
+
+    </section>
+    
+    <footer>
+        <p></p>
+        <p><small></small></p>
+    </footer>
+</div>
+
+
+</body>
+</html>
